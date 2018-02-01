@@ -137,5 +137,70 @@ public class Traversal {
         return max;
     }
 
+    //利用非递归算法来搜索二叉树中的某个元素
+    public boolean searchUsingLevelOrder(BinaryTreeNode root, int data) {
+        BinaryTreeNode temp;
+        LLQueue Q = new LLQueue();
+        if (root == null) return false;
+        Q.enQueue(root);
+        while (root != null) {
+            temp = Q.deQueue();
+            if (data == temp.getData()) {
+                return true;
+            }
+            if (root.getLeft() != null) {
+                Q.enQueue(temp.getLeft());
+            }
+            if (root.getRight() != null) {
+                Q.enQueue(temp.getRight());
+            }
+        }
+        Q.deleteQueue();
+        return false;
+    }
+
+    //将一个元素插入到二叉树中
+    public void insertInBinaryTree(BinaryTreeNode root, int data) {
+        BinaryTreeNode newNode = new BinaryTreeNode();
+        BinaryTreeNode temp;
+        newNode.setData(data);
+        newNode.setLeft(null);
+        newNode.setRight(null);
+        if (newNode == null) {
+            System.out.println("Memory Error");
+            return;
+        }
+        if (root == null) {
+            root = newNode;
+            return;
+        }
+        LLQueue Q = new LLQueue();
+        Q.enQueue(root);
+        while (!Q.isEmpty()) {
+            temp = Q.deQueue();
+            if (temp.getLeft() != null) {
+                Q.enQueue(temp.getLeft());
+            }else {
+                temp.setLeft(newNode);
+                Q.deleteQueue();
+                return;
+            }
+            if (temp.getRight() != null) {
+                Q.enQueue(temp.getRight());
+            }else {
+                temp.setRight(newNode);
+                Q.deleteQueue();
+                return;
+            }
+            Q.deleteQueue();
+        }
+    }
+
+    //计算树中结点的个数
+    public int sizeOfBinaryTree(BinaryTreeNode root) {
+        if (root == null) return 0;
+        return sizeOfBinaryTree(root.getLeft()) + 1 +  sizeOfBinaryTree(root.getRight());
+    }
+
 
 }
